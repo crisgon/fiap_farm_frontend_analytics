@@ -1,12 +1,14 @@
 import "./App.css";
-import AnalyticsProvider from "./components/AnalyticsComponent";
 
-const App = () => {
+function App() {
   return (
-    <div className="content">
-      <AnalyticsProvider />
+    <div className="container">
+      <div className="icon-container">
+        <h2>📊</h2>
+      </div>
+      <h1 className="title">Fiap Farm Analytics</h1>
     </div>
   );
-};
+}
 
 export default App;
