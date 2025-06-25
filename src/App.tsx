@@ -1,4 +1,5 @@
 import "./App.css";
+import { Button } from "@/components/ui/button";
 
 function App() {
   return (
@@ -7,6 +8,8 @@ function App() {
         <h2>📊</h2>
       </div>
       <h1 className="title">Fiap Farm Analytics</h1>
+
+      <Button>Meu botão</Button>
     </div>
   );
 }

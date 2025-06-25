@@ -1,3 +1,5 @@
+import path from "path";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -7,15 +9,21 @@ import federation from "@originjs/vite-plugin-federation";
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     federation({
       name: "analytics",
       filename: "remoteEntry.js",
       exposes: {
-        "./App": "./src/App",
+        "./modules": "./src/modules/index.ts",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "tailwindcss"],
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   build: {
     modulePreload: false,
     target: "esnext",
