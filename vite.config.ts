@@ -16,6 +16,11 @@ export default defineConfig({
       exposes: {
         "./modules": "./src/modules/index.ts",
       },
+      remotes: {
+        host:
+          process.env.HOST_REMOTE_URL ??
+          "http://localhost:3000/assets/remoteEntry.js",
+      },
       shared: ["react", "react-dom", "tailwindcss"],
     }),
   ],

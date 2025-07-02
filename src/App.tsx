@@ -1,7 +1,9 @@
 import "./App.css";
 import { Button } from "@/components/ui/button";
+import { firebase } from "host/firebase";
 
 function App() {
+  console.log("AUTH", firebase.auth);
   return (
     <div className="container">
       <div className="icon-container">
