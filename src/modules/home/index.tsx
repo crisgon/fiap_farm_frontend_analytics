@@ -8,12 +8,14 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { firebase } from "host/firebase";
-function Home() {
-  console.log("FIREBASE", firebase);
+import { useAppSelector } from "@/stores/redux/hooks";
+
+function HomeComponent() {
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50 p-6">
-      <p>Logado com: {firebase.auth.currentUser?.email ?? "-"}</p>
+      <p>Logado com: {user.email ?? "-"}</p>
       <Card className="w-full max-w-2xl shadow-lg">
         <CardHeader className="flex flex-col items-center gap-2">
           <CardTitle>Analytics Dashboard</CardTitle>
@@ -78,4 +80,4 @@ function Home() {
   );
 }
 
-export { Home };
+export const Home = HomeComponent;
