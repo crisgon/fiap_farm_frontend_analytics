@@ -13,7 +13,7 @@ function HomeComponent() {
   const { data: totalSales } = useTotalSalesQuery();
 
   return (
-    <div className="grid grid-cols-5 grid-rows-5 gap-4">
+    <div className="grid grid-cols-5 grid-rows-5 gap-4 m-auto mt-10">
       <div className="col-span-2 flex gap-4 flex-1">
         <Card className="flex-1">
           <CardHeader>
