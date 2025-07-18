@@ -1,81 +1,55 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/stores/redux/hooks";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { FastestProductsChart } from "./components/FastestProductsChart";
+import { useBestYieldProductQuery } from "@/hooks/useBestYieldProductQuery";
+import { useFastestProductsQuery } from "@/hooks/useFastestProductsQuery";
+import { TopProductsChart } from "./components/TopProductsChart";
+import { useTotalSalesQuery } from "@/hooks/useTotalSalesQuery";
+import { formatMoney } from "@/lib/utils";
 
 function HomeComponent() {
-  const user = useAppSelector((state) => state.auth.user);
+  const { data: bestYield } = useBestYieldProductQuery();
+  const { data: fastestProducts } = useFastestProductsQuery();
+  const { data: totalSales } = useTotalSalesQuery();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50 p-6">
-      <p>Logado com: {user.email ?? "-"}</p>
-      <Card className="w-full max-w-2xl shadow-lg">
-        <CardHeader className="flex flex-col items-center gap-2">
-          <CardTitle>Analytics Dashboard</CardTitle>
-          <CardDescription>
-            Visualize os principais indicadores do sistema.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-              <TabsTrigger value="sales">Vendas</TabsTrigger>
-              <TabsTrigger value="users">Usuários</TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span>Total de acessos</span>
-                  <Badge variant="secondary">12.340</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Conversões</span>
-                  <Badge variant="outline">1.234</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Taxa de rejeição</span>
-                  <Badge variant="destructive">5,2%</Badge>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="sales">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span>Vendas no mês</span>
-                  <Badge variant="secondary">R$ 23.000</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Produtos vendidos</span>
-                  <Badge variant="outline">430</Badge>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="users">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span>Novos usuários</span>
-                  <Badge variant="secondary">320</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Usuários ativos</span>
-                  <Badge variant="outline">1.200</Badge>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-          <div className="flex justify-end mt-6">
-            <Button>Ver Relatório Completo</Button>
+    <div className="grid grid-cols-5 grid-rows-5 gap-4">
+      <div className="col-span-2 flex gap-4 flex-1">
+        <Card className="flex-1">
+          <CardHeader>
+            <CardTitle>Total vendido</CardTitle>
+          </CardHeader>
+          <div className="flex items-center justify-center w-full h-full">
+            <div className="flex flex-col">
+              <span className="text-8xl leading-none font-bold">
+                {formatMoney(totalSales?.totalSoldValue ?? 0)}
+              </span>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </Card>
+      </div>
+
+      <div className="col-span-2 row-span-2 col-start-3 flex flex-col gap-4">
+        <TopProductsChart data={totalSales?.products ?? []} />
+        <FastestProductsChart data={fastestProducts?.fastestProducts ?? []} />
+      </div>
+      <div className="col-span-2 row-start-2">
+        <Card className="flex-1">
+          <CardHeader>
+            <CardTitle>Produto com melhor rendimento</CardTitle>
+          </CardHeader>
+          <div className="flex items-center justify-center w-full h-full">
+            <div className="flex flex-col">
+              <span className="text-muted-foreground text-lg">
+                {bestYield?.productName}
+              </span>
+              <span className="text-8xl leading-none font-bold">
+                {bestYield?.yieldPerHectare}
+              </span>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

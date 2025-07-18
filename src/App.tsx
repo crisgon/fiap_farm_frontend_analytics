@@ -21,6 +21,7 @@ function App({ user }: AppComponent) {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="home" element={<Home />} />
       <Route path="reports" element={<div>ANALYTICS</div>} />
     </Routes>
   );
